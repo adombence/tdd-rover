@@ -10,7 +10,6 @@ export function execute(config: RoverConfig, commands: string): RoverResult {
 
   const visited = [{ x, y }];
   const discoveredObstacles: Array<{ x: number; y: number }> = [];
-
   let processed = 0;
 
   for (const command of commands) {
@@ -24,16 +23,15 @@ export function execute(config: RoverConfig, commands: string): RoverResult {
       processed++;
       continue;
     }
+
     if (command === "f" || command === "b") {
       const delta = (command === "f" ? 1 : -1) as 1 | -1;
-
       const next = step(x, y, dir, W, H, delta);
 
-      if (next.y >= 0 && next.y < H) {
-        x = next.x;
-        y = next.y;
-        visited.push({ x, y });
-      }
+      x = next.x;
+      y = next.y;
+      dir = next.dir;
+      visited.push({ x, y });
 
       processed++;
       continue;
