@@ -22,13 +22,16 @@ export function step(
   x: number,
   y: number,
   dir: Direction,
+  width: number,
+  height: number,
   delta: 1 | -1,
 ): { x: number; y: number } {
   const md = delta === 1 ? dir : opposite(dir);
 
   if (md === "N") return { x, y: y + 1 };
   if (md === "S") return { x, y: y - 1 };
-  if (md === "E") return { x: x + 1, y };
+  if (md === "E") return { x: (x + 1) % width, y };
+  if (md === "W") return { x: (x - 1 + width) % width, y };
 
   return { x: x - 1, y };
 }

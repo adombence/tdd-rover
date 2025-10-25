@@ -25,11 +25,11 @@ export function execute(config: RoverConfig, commands: string): RoverResult {
       continue;
     }
     if (command === "f" || command === "b") {
-      const delta = command === "f" ? 1 : (-1 as 1 | -1);
+      const delta = (command === "f" ? 1 : -1) as 1 | -1;
 
-      const next = step(x, y, dir, delta);
+      const next = step(x, y, dir, W, H, delta);
 
-      if (next.x >= 0 && next.x < W && next.y >= 0 && next.y < H) {
+      if (next.y >= 0 && next.y < H) {
         x = next.x;
         y = next.y;
         visited.push({ x, y });
