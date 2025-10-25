@@ -1,8 +1,7 @@
 #!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
 
 echo "Running pre-commit checks..."
-pnpm typecheck
-pnpm test --run
-pnpm lint-staged
-echo "All pre-commit checks passed!"
+pnpm typecheck || exit 1
+pnpm test --run || exit 1
+pnpm lint-staged || exit 1
+echo "✅ All pre-commit checks passed!"
