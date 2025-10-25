@@ -1,17 +1,23 @@
-export type Direction = 'N' | 'E' | 'S' | 'W';
+export type Direction = "N" | "E" | "S" | "W";
+
+export interface Position {
+  x: number;
+  y: number;
+  dir?: Direction;
+}
 
 export interface RoverConfig {
   width: number;
   height: number;
-  start: { x: number; y: number; dir: Direction };
-  obstacles?: Array<{ x: number; y: number }>;
+  start: Position;
+  obstacles?: Array<Position>;
 }
 
 export interface RoverResult {
-  status: 'OK' | 'BLOCKED';
-  position: { x: number; y: number; dir: Direction };
-  visited: Array<{ x: number; y: number }>;
-  discoveredObstacles: Array<{ x: number; y: number }>;
+  status: "OK" | "BLOCKED";
+  position: Position;
+  visited: Array<Position>;
+  discoveredObstacles: Array<Position>;
   processed: number;
-  obstacleAt?: { x: number; y: number };
+  obstacleAt?: Position;
 }
