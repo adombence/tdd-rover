@@ -1,6 +1,8 @@
 import type { Direction, RoverConfig, RoverResult } from "./types";
 import { step, turnLeft, turnRight } from "./utils/spherical";
 
+const key = (x: number, y: number) => `${x},${y}`;
+
 export function execute(config: RoverConfig, commands: string): RoverResult {
   const { width: W, height: H } = config;
 
@@ -10,6 +12,9 @@ export function execute(config: RoverConfig, commands: string): RoverResult {
 
   const visited = [{ x, y }];
   const discoveredObstacles: Array<{ x: number; y: number }> = [];
+
+  const obstacles = new Set((config.obstacles ?? []).map((o) => key(o.x, o.y)));
+
   let processed = 0;
 
   for (const command of commands) {
@@ -28,6 +33,23 @@ export function execute(config: RoverConfig, commands: string): RoverResult {
       const delta = (command === "f" ? 1 : -1) as 1 | -1;
       const next = step(x, y, dir, W, H, delta);
 
+      if (obstacles.has(key(next.x, next.y))) {
+        const obs = { x: next.x, y: next.y };
+        discoveredObstacles.push(obs);
+
+        processed++;
+
+        return {
+          status: "BLOCKED",
+          position: { x, y, dir },
+          visited,
+          discoveredObstacles,
+          processed,
+          obstacleAt: obs,
+        };
+      }
+
+      // No obstacle, move to next position
       x = next.x;
       y = next.y;
       dir = next.dir;
@@ -36,6 +58,7 @@ export function execute(config: RoverConfig, commands: string): RoverResult {
       processed++;
       continue;
     }
+    // Ignore unknown commands
   }
 
   return {
