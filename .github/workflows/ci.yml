@@ -11,7 +11,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 23.5.0
-          cache: 'pnpm'
+          cache: "pnpm"
       - run: pnpm install
       - run: pnpm run -s typecheck
-      - run: pnpm run test -- --run
+      - run: pnpm test:coverage -- --coverage.reporter=text-summary
